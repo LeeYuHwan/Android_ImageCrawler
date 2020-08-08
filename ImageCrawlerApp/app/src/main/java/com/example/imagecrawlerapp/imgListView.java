@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 public class imgListView extends AppCompatActivity {
@@ -18,8 +19,8 @@ public class imgListView extends AppCompatActivity {
         setContentView(R.layout.activity_img_list_view);
 
         mList = (ListView) findViewById(R.id.list);
-        Intent intent = getIntent();
-        data = intent.getStringArrayExtra("data");
+        Intent getIntent = getIntent();
+        data = getIntent.getStringArrayExtra("data");
 
         final imgData mData[] = new imgData[data.length];
         for(int i = 0 ; i < data.length; i++){
@@ -27,6 +28,15 @@ public class imgListView extends AppCompatActivity {
         }
         mAdapter = new imgAdapter(this, mData);
         mList.setAdapter(mAdapter);
+
+        final Intent intent = new Intent(this, imageView.class);
+        mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                intent.putExtra("img_url", mData[position].icon);
+                startActivityForResult(intent, 0);
+            }
+        });
 
     }
 
